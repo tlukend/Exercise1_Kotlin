@@ -1,7 +1,5 @@
 package com.example.firstproject
 
-import kotlin.math.max
-
 //var = changeable, val = constant
 var name = "Tina"
 var name1: String = "Tina"
@@ -11,9 +9,10 @@ val list = listOf<String>("Bruno", "Lala", "Anna", "Martin", "KingKong")
 val sortedList = list.sorted()
 val newList = sortedList.filter { it.contains('a') }.reversed()
 
-
 var randomNumber4Digits = generateRandom()
 var userInput = ""
+
+
 
 fun generateRandom () : String {
     var rn = ""
@@ -27,19 +26,54 @@ fun generateRandom () : String {
     return rn
 }
 
-//idea for the user input: if I take all the digits extra, it could work easier
 
-fun main () {
-println(randomNumber4Digits)
-    println("Type in your guessed 4-digit number: ")
-    userInput = readLine().toString()
-    if (randomNumber4Digits.contains(userInput)){
-        println("You've got it right")
+
+fun checkIfContains (inputList: List<String>, random: String)  :Int {
+    var result = 0 //declare result variable, but a changeable one
+    for (i in inputList){ // iterate through user input
+        if (random.contains(i)){ //check if random numbers contain that element from input list
+            result ++ // increase result number
+        }
     }
-    else println("You didn't get it right")
-
+    return result
 }
 
+fun checkIfContainsOnCertainSpot (random: String, input: List<String>) :Int { // parameter is the generated random number
+    var index = 0
+    var result = 0
+    val randomlist = random.split("").filter { it.length == 1 } //splits random number into an arraylist
+    for (i in randomlist){ // iterates through list of random numbers
+        if (i == input.elementAt(index)) {
+            result++
+            index++
+        }
+        else index ++
+        }
+    return result
+}
+
+
+//idea for the user input: if I take all the digits extra, it could work easier
+// fun checkposition, fun checkcorrectnumbers
+
+fun main () {
+//println(randomNumber4Digits)
+    while (randomNumber4Digits != userInput) {
+        println("Type in your guessed 4-digit number with non-repeating numbers: ")
+        userInput = readLine().toString()
+        if (randomNumber4Digits == userInput) {
+            println("You've got it right")
+        } else println("You didn't get it right, try again")
+
+        val seperatedNumbers = userInput.split("").filter { it.length == 1 }
+        //println(seperatedNumbers)
+
+        val guessedCorrectly = checkIfContains(seperatedNumbers, randomNumber4Digits)
+        val guessedCorrectlyInOrder =
+            checkIfContainsOnCertainSpot(randomNumber4Digits, seperatedNumbers)
+        println("User input: $userInput, Output: $guessedCorrectly :  $guessedCorrectlyInOrder")
+    }
+}
 
 
 
